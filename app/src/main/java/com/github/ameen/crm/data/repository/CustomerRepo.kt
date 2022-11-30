@@ -5,18 +5,14 @@ import com.github.ameen.crm.data.mapper.toDomain
 import com.github.ameen.crm.data.mapper.toEntity
 import com.github.ameen.crm.domain.model.CustomerDomain
 import com.github.ameen.crm.domain.repository.ICustomerRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class CustomerRepo @Inject constructor(
     private val localDb: AppDatabase
 ) : ICustomerRepository {
 
-    override suspend fun getAllCustomer(): Flow<List<CustomerDomain>> {
-        return flow {
-            localDb.customerDao().getAllCustomer().map { it.toDomain() }
-        }
+    override suspend fun getAllCustomer(): List<CustomerDomain> {
+        return localDb.customerDao().getAllCustomer().map { it.toDomain() }
     }
 
     override suspend fun addNewCustomer(customerData: CustomerDomain): Long {
