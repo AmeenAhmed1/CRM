@@ -19,7 +19,7 @@ class CustomerRepo @Inject constructor(
         return localDb.customerDao().addNewCustomer(customerData.toEntity())
     }
 
-    override suspend fun updateCustomerActionType(customerId: Int, customerActionType: Int): Int {
-        return localDb.customerDao().changeCustomerActionType(customerId, customerActionType)
+    override suspend fun deleteCustomer(customerData: CustomerDomain) {
+        return localDb.customerDao().deleteCustomer(customerData.toEntity())
     }
 }

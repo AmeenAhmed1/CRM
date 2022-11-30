@@ -53,14 +53,18 @@ class CustomerAdapter() :
         holder.binding.customerAction.text = actionTypeText
 
         holder.binding.editCustomer.setOnClickListener {
-            onItemClickListener?.invoke(currentItem)
+            onItemClickListener?.invoke(currentItem, false)
+        }
+
+        holder.binding.deleteButton.setOnClickListener {
+            onItemClickListener?.invoke(currentItem, true)
         }
     }
 
     override fun getItemCount(): Int = diff.currentList.size
 
-    private var onItemClickListener: ((CustomerDomain) -> Unit)? = null
-    fun onItemClicked(listener: (CustomerDomain) -> Unit) {
+    private var onItemClickListener: ((CustomerDomain, Boolean) -> Unit)? = null
+    fun onItemClicked(listener: (CustomerDomain, Boolean) -> Unit) {
         onItemClickListener = listener
     }
 }

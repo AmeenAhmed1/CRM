@@ -6,4 +6,5 @@
     <string name="visit">Visit</string>
     <string name="follow_up">Follow up</string>
     <string name="save">Save</string>
+    <string name="no_data_hint">There is no customer, click the add button below and add new customer</string>
 </resources>

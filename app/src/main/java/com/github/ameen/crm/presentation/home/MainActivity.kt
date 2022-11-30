@@ -71,7 +71,33 @@ class MainActivity : AppCompatActivity() {
                     }
                     is DataState.Success -> {
                         binding.progress.hide()
-                        adapter.diff.submitList(it.data)
+
+                        if (it.data.isNotEmpty()) {
+                            adapter.diff.submitList(it.data)
+                            binding.noDataText.hide()
+                            binding.customerRecycler.show()
+                        } else {
+                            binding.customerRecycler.hide()
+                            binding.noDataText.show()
+                        }
+
+                    }
+                    is DataState.Error -> {}
+                }
+            }
+        }
+    }
+
+    private fun deleteCustomer(customerData: CustomerDomain) {
+        lifecycleScope.launchWhenResumed {
+            mainViewModel.deleteCustomer(customerData).collectLatest {
+                when (it) {
+                    is DataState.Loading -> {
+                        binding.progress.show()
+                    }
+                    is DataState.Success -> {
+                        binding.progress.hide()
+                        getAllCustomer()
                     }
                     is DataState.Error -> {}
                 }
@@ -84,12 +110,16 @@ class MainActivity : AppCompatActivity() {
         binding.customerRecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        adapter.onItemClicked {
-            AddCustomerDialog(
-                customerData = it
-            ) {
-                saveUserData(it)
-            }.show(supportFragmentManager, "Customer Dialog")
+        adapter.onItemClicked { selectedCustomer, isDelete ->
+
+            if (isDelete)
+                deleteCustomer(selectedCustomer)
+            else
+                AddCustomerDialog(
+                    customerData = selectedCustomer
+                ) {
+                    saveUserData(it)
+                }.show(supportFragmentManager, "Customer Dialog")
         }
     }
 

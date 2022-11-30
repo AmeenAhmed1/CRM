@@ -3,6 +3,7 @@ package com.github.ameen.crm.presentation.home
 import androidx.lifecycle.ViewModel
 import com.github.ameen.crm.domain.model.CustomerDomain
 import com.github.ameen.crm.domain.usecase.AddNewCustomerUseCase
+import com.github.ameen.crm.domain.usecase.DeleteCustomerUseCase
 import com.github.ameen.crm.domain.usecase.GetAllCustomerUseCase
 import com.github.ameen.crm.presentation.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import kotlin.coroutines.CoroutineContext
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val addNewCustomerUseCase: AddNewCustomerUseCase,
-    private val getAllCustomerUseCase: GetAllCustomerUseCase
+    private val getAllCustomerUseCase: GetAllCustomerUseCase,
+    private val deleteCustomerUseCase: DeleteCustomerUseCase
 ) : ViewModel() {
 
     private val coroutineJob: Job = Job()
@@ -46,4 +48,16 @@ class MainViewModel @Inject constructor(
 
             emit(result)
         }
+
+    fun deleteCustomer(customerData: CustomerDomain) =
+        flow {
+            emit(DataState.Loading)
+
+            val result = withContext(coroutineContext) {
+                deleteCustomerUseCase.execute(customerData)
+            }
+
+            emit(result)
+        }
+
 }
