@@ -12,8 +12,8 @@ interface CustomerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNewCustomer(customerEntityData: CustomerEntity): Long
 
-    @Query("UPDATE CustomerTable SET customerActionType = :customerType WHERE customerId = :customerType")
-    suspend fun changeCustomerActionType(customerId: Int, customerType: Int): Long
+    @Query("UPDATE CustomerTable SET customerActionType = :customerType WHERE customerId = :customerId")
+    suspend fun changeCustomerActionType(customerId: Int, customerType: Int): Int
 
     @Query("SELECT * FROM CustomerTable")
     suspend fun getAllCustomer(): List<CustomerEntity>
