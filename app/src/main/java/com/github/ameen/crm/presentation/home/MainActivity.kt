@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     is DataState.Success -> {
                         binding.progress.hide()
+                        getAllCustomer()
                         Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
                     }
                     is DataState.Error -> {}

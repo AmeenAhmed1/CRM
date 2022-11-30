@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.github.ameen.crm.R
 import com.github.ameen.crm.databinding.ItemCustomerBinding
 import com.github.ameen.crm.domain.model.CustomerDomain
 import com.github.ameen.crm.presentation.util.ActionType
@@ -41,9 +42,9 @@ class CustomerAdapter() :
 
         var actionTypeText = ""
         when (currentItem.customerActionType) {
-            ActionType.CALL.type -> actionTypeText = ActionType.CALL.name
-            ActionType.VISIT.type -> actionTypeText = ActionType.VISIT.name
-            ActionType.CALL.type -> actionTypeText = ActionType.FOLLOW_UP.name
+            ActionType.CALL.type -> actionTypeText = holder.binding.root.resources.getString(R.string.call)
+            ActionType.VISIT.type -> actionTypeText = holder.binding.root.resources.getString(R.string.visit)
+            ActionType.FOLLOW_UP.type -> actionTypeText = holder.binding.root.resources.getString(R.string.follow_up)
         }
 
         holder.binding.customerAction.text = actionTypeText
