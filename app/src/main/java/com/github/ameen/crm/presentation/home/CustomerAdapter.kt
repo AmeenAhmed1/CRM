@@ -42,12 +42,19 @@ class CustomerAdapter() :
 
         var actionTypeText = ""
         when (currentItem.customerActionType) {
-            ActionType.CALL.type -> actionTypeText = holder.binding.root.resources.getString(R.string.call)
-            ActionType.VISIT.type -> actionTypeText = holder.binding.root.resources.getString(R.string.visit)
-            ActionType.FOLLOW_UP.type -> actionTypeText = holder.binding.root.resources.getString(R.string.follow_up)
+            ActionType.CALL.type -> actionTypeText =
+                holder.binding.root.resources.getString(R.string.call)
+            ActionType.VISIT.type -> actionTypeText =
+                holder.binding.root.resources.getString(R.string.visit)
+            ActionType.FOLLOW_UP.type -> actionTypeText =
+                holder.binding.root.resources.getString(R.string.follow_up)
         }
 
         holder.binding.customerAction.text = actionTypeText
+
+        holder.binding.editCustomer.setOnClickListener {
+            onItemClickListener?.invoke(currentItem)
+        }
     }
 
     override fun getItemCount(): Int = diff.currentList.size

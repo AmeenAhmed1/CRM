@@ -83,6 +83,14 @@ class MainActivity : AppCompatActivity() {
         binding.customerRecycler.adapter = adapter
         binding.customerRecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        adapter.onItemClicked {
+            AddCustomerDialog(
+                customerData = it
+            ) {
+                saveUserData(it)
+            }.show(supportFragmentManager, "Customer Dialog")
+        }
     }
 
 }

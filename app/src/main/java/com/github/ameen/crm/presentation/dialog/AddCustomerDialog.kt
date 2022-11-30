@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddCustomerDialog(
+    private val customerData: CustomerDomain? = null,
     private val confirmAddCustomer: ((CustomerDomain) -> Unit)?
 ) : DialogFragment() {
 
@@ -45,17 +46,30 @@ class AddCustomerDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        if (customerData != null)
+            initView()
+
         binding.saveButton.setOnClickListener {
 
             val customerName = binding.customerNameText.text.toString()
 
             if (this::actionType.isInitialized && customerName.isNotEmpty()) {
-                confirmAddCustomer?.invoke(
-                    CustomerDomain(
-                        customerName = customerName,
-                        customerActionType = actionType.type
+                if (customerData != null)
+                    confirmAddCustomer?.invoke(
+                        CustomerDomain(
+                            customerId = customerData.customerId,
+                            customerName = customerName,
+                            customerActionType = actionType.type
+                        )
                     )
-                )
+                else
+                    confirmAddCustomer?.invoke(
+                        CustomerDomain(
+                            customerName = customerName,
+                            customerActionType = actionType.type
+                        )
+                    )
                 this.dismiss()
             } else
                 Toast.makeText(requireContext(), "Add Valid Data", Toast.LENGTH_SHORT).show()
@@ -69,5 +83,24 @@ class AddCustomerDialog(
             }
         }
 
+    }
+
+    private fun initView() {
+        binding.customerNameText.setText(customerData?.customerName ?: "")
+
+        when (customerData?.customerActionType) {
+            0 -> {
+                binding.radioActionGroup.check(R.id.radio_call)
+                actionType = ActionType.CALL
+            }
+            1 -> {
+                binding.radioActionGroup.check(R.id.radio_visit)
+                actionType = ActionType.VISIT
+            }
+            2 -> {
+                binding.radioActionGroup.check(R.id.radio_followup)
+                actionType = ActionType.FOLLOW_UP
+            }
+        }
     }
 }
